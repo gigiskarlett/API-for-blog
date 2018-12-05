@@ -25,3 +25,31 @@ describe("", function() {
     after(function() {
         return closeServer();
     });
+
+    // test strategy:
+    //  1. make request to `/blog-posts`
+    //  2. inspect response object and prove has right code and have
+    //  right keys in response object.
+  it("it should list blog posts on get", function() {
+    // for Mocha tests, when we're dealing with asynchronous operations,
+    // we must either return a Promise object or else call a `done` callback
+    // at the end of the test. The `chai.request(server).get...` call is asynchronous
+    // and returns a Promise, so we just return it.
+    return chai
+      .request(app)
+      .get("/blog-posts")
+      .then(function(res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a("array");
+
+        expect(res.body.length).to.be.at.least(1);
+        // each item should be an object with key/value pairs
+        // for `title`, `author`, `content`
+        const expectedKeys = ["title", "author", "content"];
+        res.body.forEach(function(item) {
+          expect(item).to.be.a("object");
+          expect(item).to.include.keys(expectedKeys);
+        });
+      });
+  });
