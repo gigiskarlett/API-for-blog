@@ -122,4 +122,26 @@ describe("", function() {
           expect(res.body).to.deep.equal(updateData);
         })
     );
+	});
+	
+	// test strategy:
+  //  1. GET blog posts so we can get ID of one
+  //  to delete.
+  //  2. DELETE an item and ensure we get back a status 204
+  it("should delete items on DELETE", function() {
+    return (
+      chai
+        .request(app)
+        // first have to get so we have an `id` of item
+        // to delete
+        .get("/blog-posts")
+        .then(function(res) {
+          return chai.request(app).delete(`/recipes/${res.body[0].id}`);
+        })
+        .then(function(res) {
+          expect(res).to.have.status(204);
+        })
+    );
   });
+});
+
