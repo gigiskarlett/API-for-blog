@@ -7,7 +7,7 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-describe("", function() {
+describe("Blog Post", function() {
   // Before our tests run, we activate the server. Our `runServer`
   // function returns a promise, and we return the that promise by
   // doing `return runServer`. If we didn't return a promise here,
@@ -59,7 +59,7 @@ describe("", function() {
   //  2. inspect response object and prove it has right
   //  status code and that the returned object has an `id`
   it("should add an item on POST", function() {
-    const newItem = { title "Juan", author: "paulo", content: "The life of Juan"};
+    const newItem = { title: "Juan", author: "juan", content: "The life of Juan" };
     return chai
       .request(app)
       .post("/blog-posts")
@@ -92,7 +92,7 @@ describe("", function() {
     // we can make a second, PUT call to the app.
     const updateData = {
       title: "bake a coffee cake",
-			author: "John mcmuffin"
+			author: "John mcmuffin",
 			content: "This is how you bake an awesome cake..."
     };
 

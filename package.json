@@ -12,5 +12,8 @@
     "express": "^4.16.4",
     "morgan": "^1.9.1",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
   }
 }
