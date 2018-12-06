@@ -136,7 +136,7 @@ describe("Blog Post", function() {
         // to delete
         .get("/blog-posts")
         .then(function(res) {
-          return chai.request(app).delete(`/recipes/${res.body[0].id}`);
+          return chai.request(app).delete(`/blog-posts/${res.body[0].id}`);
         })
         .then(function(res) {
           expect(res).to.have.status(204);
