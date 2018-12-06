@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
 // log an error and return a 400 status code. if okay,
 // add new item to BlogPosts and return it with a 201.
 router.post('/', (req, res) => {
-  // ensure `name` and `budget` are in request body
+  // ensure `name` and `bugit dget` are in request body
   const requiredFields = ['title', 'author', 'content'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
