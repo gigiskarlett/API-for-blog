@@ -46,7 +46,7 @@ describe("Blog Post", function() {
         // because we create three items on app load
         expect(res.body.length).to.be.at.least(1);
         // each item should be an object with key/value pairs
-        const expectedKeys = ["title", "id", "author", "content"];
+        const expectedKeys = ["title", "id", "author", "content", "publishDate"];
         res.body.forEach(function(item) {
           expect(item).to.be.a("object");
           expect(item).to.include.keys(expectedKeys);
@@ -59,24 +59,37 @@ describe("Blog Post", function() {
   //  2. inspect response object and prove it has right
   //  status code and that the returned object has an `id`
   it("should add an item on POST", function() {
-    const newItem = { title: "Juan", author: "juan", content: "The life of Juan" };
-    return chai
-      .request(app)
-      .post("/blog-posts")
-      .send(newItem)
-      .then(function(res) {
-        expect(res).to.have.status(201);
-        expect(res).to.be.json;
-        expect(res.body).to.be.a("object");
-        expect(res.body).to.include.keys("id", "title", "author", "content");
-        expect(res.body.id).to.not.equal(null);
-        // response should be deep equal to `newItem` from above if we assign
-        // `id` to it from `res.body.id`
-        expect(res.body).to.deep.equal(
-          Object.assign(newItem, { id: res.body.id })
-        );
-      });
+		const newPost = {
+			title: "bake like a Pro",
+			content: "Just buy a cake",
+			author: "cake master"
+		};
+		const expectedKeys = ["id", "publishDate"].concat(Object.keys(newPost));
+		return chai	
+			.request(app)
+			.post("/blog-posts")
+			.send(newPost)
+			.then(function(res) {
+				expect(res).to.have.status(201);
+				expect(res).to.be.json;
+				expect(res.body).to.be.a("object");
+				expect(res.body).to.have.all.keys(expectedKeys);
+				expect(res.body.title).to.equal(newPost.title);
+				expect(res.body.content).to.equal(newPost.content);
+				expect(res.body.author).to.equal(newPost.author);
+			});
 	});
+		
+		it("should error if POST missing expected values", function(){
+			const badRequestData = {};
+			return chai 	
+				.request(app)
+				.post("/blog-posts")
+				.send(badRequestData)
+				.then(function(res) {
+					expect(res).to.have.status(400);
+				});
+		});
 	
   // test strategy:
   //  1. initialize some update data (we won't have an `id` yet)
@@ -87,41 +100,24 @@ describe("Blog Post", function() {
   //  has right status code and that we get back an updated
   //  item with the right data in it.
   it("should update items on PUT", function() {
-    // we initialize our updateData here and then after the initial
-    // request to the app, we update it with an `id` property so
-    // we can make a second, PUT call to the app.
-    const updateData = {
-      title: "bake a coffee cake",
-			author: "John mcmuffin",
-			content: "This is how you bake an awesome cake..."
-    };
-
-    return (
-      chai
-        .request(app)
-        // first have to get so we have an idea of object to update
-        .get("/blog-posts")
-        .then(function(res) {
-          updateData.id = res.body[0].id;
-          // this will return a promise whose value will be the response
-          // object, which we can inspect in the next `then` block. Note
-          // that we could have used a nested callback here instead of
-          // returning a promise and chaining with `then`, but we find
-          // this approach cleaner and easier to read and reason about.
-          return chai
-            .request(app)
-            .put(`/blog-posts/${updateData.id}`)
-            .send(updateData);
-        })
-        // prove that the PUT request has right status code
-        // and returns updated item
-        .then(function(res) {
-          expect(res).to.have.status(200);
-          expect(res).to.be.json;
-          expect(res.body).to.be.a("object");
-          expect(res.body).to.deep.equal(updateData);
-        })
-    );
+		return(
+			chai
+				.request(app)
+				.get("/blog-posts")
+				.then(function(res) {  
+					const updatedPost = Object.assign(res.body[0], {
+						title: "bake a cake",
+						content: "turn on the oven"
+					});
+					return chai
+						.request(app)
+						.put(`/blog-posts/${res.body[0].id}`)
+						.send(updatedPost)
+						.then(function(res) {
+							expect(res).to.have.status(204);
+						});
+				})
+		);
 	});
 	
 	// test strategy:
