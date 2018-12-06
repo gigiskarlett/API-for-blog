@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog More</title>
+    <meta name="description" content="Blog list>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Blog More</h1>
+      </header>
+      <main>
+        <section>
+          <h2>Blog posts</h2>
+          <form id="js-blog-post-form">
+            <div>
+                <label for="blog-post-entry">Add a post</label>
+                <input required type="text" name="blog-list-name" id="js-blog-name" placeholder="My amazing day...">
+                <input required type="text" name="blog-list-content" id="js-blog-content" placeholder="My amazing day was...">
+            </div>
+                <button type="submit">Add blog post</button>
+          </form>
+
+          <ul class="blog posts js-blog-posts">
+          </ul>
+        </>
+      </main>
+    </div>
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="/client.js"></script>
+  </body>
+</html>
